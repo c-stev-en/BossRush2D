@@ -22,7 +22,7 @@ script = ExtResource("1_8piur")
 position = Vector2(576, 324)
 
 [node name="BossHPBar" parent="." instance=ExtResource("4_78gd5")]
-position = Vector2(576, 10)
+centered = false
 
 [node name="bossWall_left" type="StaticBody2D" parent="."]
 
@@ -69,4 +69,5 @@ position = Vector2(660, 110)
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("1_t2fl7")]
 position = Vector2(143, 214)
 
+[connection signal="bossHitt" from="Player" to="BossHPBar" method="_on_player_boss_hitt"]
 [connection signal="new_bullet" from="Player" to="boss" method="_on_player_new_bullet"]

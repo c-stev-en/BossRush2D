@@ -39,12 +39,12 @@ func _physics_process(delta: float) -> void:
 			rotation -= 4 * delta
 			if (global_position.distance_to(\
 				Vector2(temp_bosspos, 110)) <= 8):
-				print("Val: ", value, ", Nodelay: ", nodelay, ", Spin: ", spin)
+				#print("Val: ", value, ", Nodelay: ", nodelay, ", Spin: ", spin)
 				remove_collision_exception_with(bossWall_L)
 				remove_collision_exception_with(bossWall_R)
 				speed = 100.0
 				$AnimatedSprite2D.play("look")
-				print("timer start")
+				#print("timer start")
 				bosstimer.start()
 				spin = false
 	
@@ -67,8 +67,8 @@ func _physics_process(delta: float) -> void:
 			if (value == 10 and !atk):
 				spin_atk(delta)
 				waiter1 = false
-				print("Attack call, waiter1 : ", waiter1)
-			print("newvalue: ", value)
+				#print("Attack call, waiter1 : ", waiter1)
+			#print("newvalue: ", value)
 		
 	if (atk == true):
 		if (global_position.distance_to(temp_playerpos) > 8):
@@ -83,7 +83,7 @@ func _physics_process(delta: float) -> void:
 func flip_dir() -> void:
 	dir *= -1
 	$AnimatedSprite2D.flip_h = (dir < 0)
-	print(dir)
+	#print(dir)
 	
 func spin_atk(delta : float) -> void:
 	add_collision_exception_with(bossWall_L)
@@ -98,10 +98,10 @@ func spin_atk(delta : float) -> void:
 	nodelay = false
 	temp_playerpos = Player.global_position
 	temp_bosspos = global_position.x
-	print("NO DELAY: ", nodelay)
+	#print("NO DELAY: ", nodelay)
 
 func _on_timer_timeout() -> void:
 	value = 0
 	nodelay = true
 	waiter1 = true
-	print("timer end, Nodelay: ", nodelay, ", waiter1: ", waiter1)
+	#print("timer end, Nodelay: ", nodelay, ", waiter1: ", waiter1)

@@ -24,7 +24,7 @@ func _physics_process(delta: float) -> void:
 		
 	if Input.is_action_just_pressed("ui_shoot"):
 		bulletct = get_tree().get_nodes_in_group("BULLET").size()
-		print("bulletct: ", bulletct)
+		#print("bulletct: ", bulletct)
 		if (bulletct < 5):
 			shoot()
 

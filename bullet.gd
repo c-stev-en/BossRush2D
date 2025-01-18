@@ -13,14 +13,16 @@ func _physics_process(delta: float) -> void:
 	
 	if (coll):
 		var coll_obj := coll.get_collider()
-		if (coll_obj.name == "boss"):
+		var objName : String = coll_obj.name
+		#print("obj name: ", coll_obj.name)
+		if (objName == "boss"):
 			boss_hit.emit()
 			destroy()
-		elif ("bossWall" in coll_obj.name):
-			print("wall hit")
+		elif ("bossWall" in objName):
+			#print("wall hit")
 			add_collision_exception_with(coll_obj)
 		else:
-			print("name: ", coll_obj.name)
+			#print("name: ", coll_obj.name)
 			destroy()
 
 func destroy() -> void:

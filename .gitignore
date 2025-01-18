@@ -5,4 +5,6 @@ Demos/
 images/
 Sprite/
 *.tmp
+*.import
+*.cfg
 
