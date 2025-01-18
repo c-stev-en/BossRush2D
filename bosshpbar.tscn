@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://chv1cau47ikrf"]
+
+[ext_resource type="Texture2D" uid="uid://bfsjut4e81ryk" path="res://Sprite/HPbar.png" id="1_x17gl"]
+[ext_resource type="Script" path="res://bosshpbar.gd" id="2_jfv5r"]
+
+[node name="BossHPBar" type="Sprite2D"]
+scale = Vector2(1, 0.4)
+texture = ExtResource("1_x17gl")
+script = ExtResource("2_jfv5r")

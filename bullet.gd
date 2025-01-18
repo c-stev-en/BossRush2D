@@ -1,19 +1,28 @@
 extends CharacterBody2D
 var vel : Vector2
+var CURRENTBULLETNODE : CharacterBody2D
+signal boss_hit
 
-func _ready():
-	$VisibleOnScreenNotifier2D.connect("screen_exited", Callable(self, "_scex()"))
-	add_to_group("BULLET")
+func _ready() -> void:
+	if not (is_in_group("BULLET")):
+		add_to_group("BULLET")
+	CURRENTBULLETNODE = get_node(".")
 
 func _physics_process(delta: float) -> void:
-	var coll_info = move_and_collide(vel * delta * 300)
+	var coll := move_and_collide(vel * delta * 300)
 	
-	if (coll_info) : #dont allow collision
-		Destroy()
+	if (coll):
+		var coll_obj := coll.get_collider()
+		if (coll_obj.name == "boss"):
+			boss_hit.emit()
+			destroy()
+		elif ("bossWall" in coll_obj.name):
+			print("wall hit")
+			add_collision_exception_with(coll_obj)
+		else:
+			print("name: ", coll_obj.name)
+			destroy()
 
-func _scex():
-	Destroy()
-	
-func Destroy():
+func destroy() -> void:
 	remove_from_group("BULLET")
 	queue_free()

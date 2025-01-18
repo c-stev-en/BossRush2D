@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://dppqbu3s6q1kr"]
+
+[ext_resource type="Script" path="res://game_scene.gd" id="1_8piur"]
+[ext_resource type="PackedScene" uid="uid://jh4k5u4riyhe" path="res://Player.tscn" id="1_t2fl7"]
+[ext_resource type="Texture2D" uid="uid://b818wwlo775xy" path="res://icon.svg" id="2_85v2m"]
+[ext_resource type="PackedScene" uid="uid://ct7x8pth26xu4" path="res://boss.tscn" id="3_u8ley"]
+[ext_resource type="PackedScene" uid="uid://chv1cau47ikrf" path="res://bosshpbar.tscn" id="4_78gd5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n71kq"]
+size = Vector2(101.513, 326.495)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tr6r2"]
+size = Vector2(21, 659)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0gek1"]
+size = Vector2(126.633, 121.17)
+
+[node name="GameScene" type="Node2D"]
+script = ExtResource("1_8piur")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="BossHPBar" parent="." instance=ExtResource("4_78gd5")]
+position = Vector2(576, 10)
+
+[node name="bossWall_left" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bossWall_left"]
+position = Vector2(100, 136)
+rotation = -3.14159
+scale = Vector2(0.156878, -0.834798)
+shape = SubResource("RectangleShape2D_n71kq")
+
+[node name="bossWall_right" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bossWall_right"]
+position = Vector2(1054, 136)
+rotation = -3.14159
+scale = Vector2(0.156878, -0.834798)
+shape = SubResource("RectangleShape2D_n71kq")
+
+[node name="Sidewall_left" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sidewall_left"]
+position = Vector2(-12, 320)
+shape = SubResource("RectangleShape2D_tr6r2")
+
+[node name="Sidewall_right" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sidewall_right"]
+position = Vector2(1164, 320)
+shape = SubResource("RectangleShape2D_tr6r2")
+
+[node name="Platform" type="StaticBody2D" parent="."]
+position = Vector2(576, 560)
+scale = Vector2(9.05697, 0.551665)
+
+[node name="Sprite2D" type="Sprite2D" parent="Platform"]
+texture = ExtResource("2_85v2m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
+position = Vector2(0.0226288, -0.380341)
+shape = SubResource("RectangleShape2D_0gek1")
+
+[node name="boss" parent="." instance=ExtResource("3_u8ley")]
+position = Vector2(660, 110)
+
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("1_t2fl7")]
+position = Vector2(143, 214)
+
+[connection signal="new_bullet" from="Player" to="boss" method="_on_player_new_bullet"]
