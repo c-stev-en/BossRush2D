@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dppqbu3s6q1kr"]
+[gd_scene load_steps=13 format=3 uid="uid://dppqbu3s6q1kr"]
 
 [ext_resource type="Script" path="res://game_scene.gd" id="1_8piur"]
 [ext_resource type="PackedScene" uid="uid://jh4k5u4riyhe" path="res://Player.tscn" id="1_t2fl7"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://chv1cau47ikrf" path="res://bosshpbar.tscn" id="4_78gd5"]
 [ext_resource type="FontFile" uid="uid://7j7ml23f06ai" path="res://Roboto-Regular.ttf" id="6_iy50k"]
 [ext_resource type="Script" path="res://label.gd" id="7_02odw"]
+[ext_resource type="PackedScene" uid="uid://feycnr0ao2r" path="res://movingplatform.tscn" id="8_i1ge1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n71kq"]
 size = Vector2(101.513, 326.495)
@@ -68,6 +69,12 @@ texture = ExtResource("2_85v2m")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
 position = Vector2(0.0226288, -0.380341)
 shape = SubResource("RectangleShape2D_0gek1")
+
+[node name="Moving_L" parent="." instance=ExtResource("8_i1ge1")]
+position = Vector2(46, 160)
+
+[node name="Moving_R" parent="." instance=ExtResource("8_i1ge1")]
+position = Vector2(1106, 160)
 
 [node name="boss" parent="." groups=["boss"] instance=ExtResource("3_u8ley")]
 position = Vector2(660, 110)

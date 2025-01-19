@@ -29,6 +29,8 @@ func _ready() -> void:
 	bosstimer.start()
 
 func _physics_process(delta: float) -> void:
+	if (Engine.get_process_frames() % 10 == 0 and rotation != 0):
+		print("rotation: ", rotation)
 	if (atk == false):
 		if !(spin):
 			velocity.x = dir * speed
@@ -55,7 +57,7 @@ func _physics_process(delta: float) -> void:
 		
 		if (position.y != 110 or rotation != 0) and !spin:
 			position.y = 110
-			rotation = 0
+			rotation = max(rotation - (7 * delta), 0)
 	
 		if is_on_wall() and ("bossWall" in collider.name) and !spin:
 			flip_dir()

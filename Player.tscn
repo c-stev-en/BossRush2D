@@ -8,6 +8,11 @@ size = Vector2(2, 6)
 
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(8, 8)
+slide_on_ceiling = false
+floor_constant_speed = true
+floor_snap_length = 2.0
+platform_on_leave = 2
+safe_margin = 0.001
 script = ExtResource("1_bafyl")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
