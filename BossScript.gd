@@ -6,6 +6,11 @@ extends CharacterBody2D
 @onready var dir : int = 1
 @onready var value : int = 0
 @onready var bosstimer : Timer = $Timer
+@onready var bodybox : Area2D = $Bodybox
+@onready var anima : AnimatedSprite2D = $AnimatedSprite2D
+@onready var wingdown : CollisionPolygon2D = $Bodybox/WingdownPolygon
+@onready var wingmid : CollisionPolygon2D = $Bodybox/WingmidPolygon
+@onready var wingup : CollisionPolygon2D = $Bodybox/WingupPolygon
 @onready var Player : CharacterBody2D = get_tree().\
 	get_first_node_in_group("Player")
 @onready var bossWall_L : StaticBody2D = get_tree().\
@@ -23,14 +28,13 @@ var temp_bosspos : int
 
 func _ready() -> void:
 	add_collision_exception_with(Player)
-	$AnimatedSprite2D.play("look")
-	$AnimatedSprite2D.flip_h = false
+	update_hitbox_frame(0)
+	anima.play("look")
+	anima.flip_h = false
 	rng.seed = Time.get_ticks_msec()
 	bosstimer.start()
 
 func _physics_process(delta: float) -> void:
-	if (Engine.get_process_frames() % 10 == 0 and rotation != 0):
-		print("rotation: ", rotation)
 	if (atk == false):
 		if !(spin):
 			velocity.x = dir * speed
@@ -45,7 +49,7 @@ func _physics_process(delta: float) -> void:
 				remove_collision_exception_with(bossWall_L)
 				remove_collision_exception_with(bossWall_R)
 				speed = 100.0
-				$AnimatedSprite2D.play("look")
+				anima.play("look")
 				#print("timer start")
 				bosstimer.start()
 				spin = false
@@ -84,14 +88,14 @@ func _physics_process(delta: float) -> void:
 
 func flip_dir() -> void:
 	dir *= -1
-	$AnimatedSprite2D.flip_h = (dir < 0)
+	anima.flip_h = (dir < 0)
 	#print(dir)
 	
 func spin_atk(delta : float) -> void:
 	add_collision_exception_with(bossWall_L)
 	add_collision_exception_with(bossWall_R)
-	$AnimatedSprite2D.stop()
-	$AnimatedSprite2D.frame = 1
+	anima.stop()
+	anima.frame = 1
 	speed = 0.0
 	await get_tree().create_timer(1).timeout
 	spin = true
@@ -107,3 +111,30 @@ func _on_timer_timeout() -> void:
 	nodelay = true
 	waiter1 = true
 	#print("timer end, Nodelay: ", nodelay, ", waiter1: ", waiter1)
+
+func _on_bodybox_body_entered(body: Node2D) -> void:
+	if (bodybox.overlaps_body(Player)):
+		print("Player in me")
+
+func _on_animated_sprite_2d_frame_changed() -> void:
+	update_hitbox_frame(anima.frame)
+	
+func update_hitbox_frame(frame : int) -> void:
+	match frame:
+		0:
+			set_polygons(false, true, true)
+			print("frame0")
+		1, 3:
+			set_polygons(true, false, true)
+			print("frame1/3")
+		2:
+			set_polygons(true, true, false)
+			print("frame2")
+		_:
+			print("neither")
+	
+	
+func set_polygons(w_up : bool, w_mid : bool, w_dwn : bool) -> void:
+	wingup.disabled = w_up
+	wingmid.disabled = w_mid
+	wingdown.disabled = w_dwn

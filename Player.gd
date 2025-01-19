@@ -1,7 +1,7 @@
 extends CharacterBody2D
 const bulletpath = preload("res://bullet.tscn")
 const SPEED : float = 180.0
-const JUMP_VELOCITY : float = -500.0
+const JUMP_VELOCITY : float = -400.0
 var bulletpos : Vector2
 var collide_y : int = 560
 var jumpct : int = 1
