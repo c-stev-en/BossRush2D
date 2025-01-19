@@ -26,6 +26,8 @@ var nodelay : bool = false
 var temp_playerpos : Vector2
 var temp_bosspos : int
 
+signal valid(val: int)
+
 func _ready() -> void:
 	add_collision_exception_with(Player)
 	update_hitbox_frame(0)
@@ -104,12 +106,14 @@ func spin_atk(delta : float) -> void:
 	nodelay = false
 	temp_playerpos = Player.global_position
 	temp_bosspos = global_position.x
+	valid.emit(0)
 	#print("NO DELAY: ", nodelay)
-
+ 
 func _on_timer_timeout() -> void:
 	value = 0
 	nodelay = true
 	waiter1 = true
+	valid.emit(1) #1 = FRAME1
 	#print("timer end, Nodelay: ", nodelay, ", waiter1: ", waiter1)
 
 func _on_bodybox_body_entered(body: Node2D) -> void:
@@ -141,4 +145,6 @@ func set_polygons(w_up : bool, w_mid : bool, w_dwn : bool) -> void:
 
 
 func _on_boss_hp_bar_bossdead() -> void:
+	speed = 0.0
+	await get_tree().create_timer(2).timeout
 	queue_free()

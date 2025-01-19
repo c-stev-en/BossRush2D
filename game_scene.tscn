@@ -1,13 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://dppqbu3s6q1kr"]
+[gd_scene load_steps=14 format=3 uid="uid://dppqbu3s6q1kr"]
 
 [ext_resource type="Script" path="res://game_scene.gd" id="1_8piur"]
 [ext_resource type="PackedScene" uid="uid://jh4k5u4riyhe" path="res://Player.tscn" id="1_t2fl7"]
 [ext_resource type="Texture2D" uid="uid://b818wwlo775xy" path="res://icon.svg" id="2_85v2m"]
 [ext_resource type="PackedScene" uid="uid://ct7x8pth26xu4" path="res://boss.tscn" id="3_u8ley"]
 [ext_resource type="PackedScene" uid="uid://chv1cau47ikrf" path="res://bosshpbar.tscn" id="4_78gd5"]
-[ext_resource type="FontFile" uid="uid://7j7ml23f06ai" path="res://Roboto-Regular.ttf" id="6_iy50k"]
-[ext_resource type="Script" path="res://label.gd" id="7_02odw"]
+[ext_resource type="Texture2D" uid="uid://qo2xmh5ipv13" path="res://Sprite/red_box.png" id="7_0mmvf"]
 [ext_resource type="PackedScene" uid="uid://feycnr0ao2r" path="res://movingplatform.tscn" id="8_i1ge1"]
+[ext_resource type="Texture2D" uid="uid://ummwk7hh22ef" path="res://Sprite/green_box.png" id="8_vw23b"]
+[ext_resource type="Script" path="res://test.gd" id="9_tk56f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n71kq"]
 size = Vector2(101.513, 326.495)
@@ -18,9 +19,19 @@ size = Vector2(21, 659)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0gek1"]
 size = Vector2(126.633, 121.17)
 
-[sub_resource type="LabelSettings" id="LabelSettings_3h23q"]
-font = ExtResource("6_iy50k")
-font_size = 40
+[sub_resource type="SpriteFrames" id="SpriteFrames_pqp31"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_0mmvf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_vw23b")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_8piur")
@@ -82,17 +93,13 @@ position = Vector2(660, 110)
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("1_t2fl7")]
 position = Vector2(143, 214)
 
-[node name="TestLabel" type="Label" parent="."]
-offset_left = 4.0
-offset_top = 589.0
-offset_right = 77.0
-offset_bottom = 648.0
-text = "1"
-label_settings = SubResource("LabelSettings_3h23q")
-horizontal_alignment = 1
-vertical_alignment = 1
-script = ExtResource("7_02odw")
+[node name="TEST" type="AnimatedSprite2D" parent="."]
+position = Vector2(30, 620)
+scale = Vector2(0.08, 0.08)
+sprite_frames = SubResource("SpriteFrames_pqp31")
+script = ExtResource("9_tk56f")
 
 [connection signal="bossdead" from="BossHPBar" to="boss" method="_on_boss_hp_bar_bossdead"]
+[connection signal="valid" from="boss" to="TEST" method="_on_boss_valid"]
 [connection signal="bossHitt" from="Player" to="BossHPBar" method="_on_player_boss_hitt"]
 [connection signal="new_bullet" from="Player" to="boss" method="_on_player_new_bullet"]

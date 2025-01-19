@@ -1,6 +1,7 @@
 extends Sprite2D
 var scale_x : float = 1.00
 var bosshp : int = 100
+var dead : bool = false
 signal bossdead
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,4 +14,6 @@ func _on_player_boss_hitt() -> void:
 		scale.x = scale_x
 		#print("bosshp: ", scale_x)
 	else:
-		bossdead.emit()
+		if (dead == false):
+			dead = true
+			bossdead.emit()
