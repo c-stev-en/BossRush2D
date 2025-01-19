@@ -138,3 +138,7 @@ func set_polygons(w_up : bool, w_mid : bool, w_dwn : bool) -> void:
 	wingup.disabled = w_up
 	wingmid.disabled = w_mid
 	wingdown.disabled = w_dwn
+
+
+func _on_boss_hp_bar_bossdead() -> void:
+	queue_free()

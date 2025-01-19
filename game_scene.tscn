@@ -93,5 +93,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("7_02odw")
 
+[connection signal="bossdead" from="BossHPBar" to="boss" method="_on_boss_hp_bar_bossdead"]
 [connection signal="bossHitt" from="Player" to="BossHPBar" method="_on_player_boss_hitt"]
 [connection signal="new_bullet" from="Player" to="boss" method="_on_player_new_bullet"]
