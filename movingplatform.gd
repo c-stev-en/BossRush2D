@@ -1,15 +1,6 @@
 extends Path2D
 
-@onready var path_follow : PathFollow2D = $PathFollow2D
 @onready var anima : AnimationPlayer = $AnimationPlayer
-@onready var sprite : Sprite2D = \
-$AnimatableBody2D/Sprite2D
-@onready var coll_shape : CollisionPolygon2D = \
-$AnimatableBody2D/CollisionPolygon2D
-
-var loop : bool = true
-var speed : float = 0.14
-var spd_scale : float = 1.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -20,3 +11,9 @@ func _process(delta: float) -> void:
 	pass
 	#if (sprite.global_position.y != coll_shape.global_position.y):
 		#sprite.global_position.y = coll_shape.global_position.y
+
+func _on_boss_hp_bar_bossdead() -> void:
+	anima.stop()
+
+func _on_hearts_killplayer() -> void:
+	anima.stop()

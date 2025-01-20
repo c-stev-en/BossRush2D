@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwiew6n710hrj"]
+
+[ext_resource type="Texture2D" uid="uid://b6r00dio68ih5" path="res://Sprite/circus.jpg" id="1_r5v05"]
+[ext_resource type="Script" path="res://backdrop.gd" id="2_vyxax"]
+
+[node name="backdrop" type="Sprite2D"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_r5v05")
+script = ExtResource("2_vyxax")

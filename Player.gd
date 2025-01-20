@@ -1,21 +1,23 @@
 extends CharacterBody2D
 
+@onready var timer : Timer = $Timer
+@onready var sprite : Sprite2D = $Sprite2D
+
 const bulletpath = preload("res://bullet.tscn")
 const SPEED : float = 180.0
 const JUMP_VELOCITY : float = -400.0
+
 var bulletpos : Vector2
 var collide_y : int = 560
 var jumpct : int = 1
 var bulletct : int = 0
 var iframe : bool = true
 var hp : int = 3
-var dir : int
+var dir : int = 1
 
 signal bossHitt
 signal hpdec(newhp : int)
 signal new_bullet(bullet_node : CharacterBody2D)
-
-@onready var timer : Timer = $Timer
 
 func _ready() -> void:
 	timer.start()
@@ -52,9 +54,10 @@ func _physics_process(delta: float) -> void:
 	if (Engine.get_process_frames() % 4 == 0):
 		if (direction == -1 and dir != -1):
 			dir = -1
+			sprite.flip_h = true
 		if (direction == 1 and dir != 1):
 			dir = 1
-	
+			sprite.flip_h = false
 	# CHECK FOR COLLISION WITH BOSS WALLS
 	# CHECKS IF GROUND HAS SPRITE2D FOR COLLISION
 	for i in get_slide_collision_count():
@@ -83,7 +86,6 @@ func shoot() -> void:
 func bossHit() -> void:
 	bossHitt.emit()
 
-
 func _on_boss_hit_player() -> void:
 	if (iframe == false):
 		iframe = true
@@ -94,7 +96,6 @@ func _on_boss_hit_player() -> void:
 func _on_timer_timeout() -> void:
 	if (iframe == true):
 		iframe = false
-
 
 func _on_hearts_killplayer() -> void:
 	queue_free()

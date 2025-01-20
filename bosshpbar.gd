@@ -1,7 +1,9 @@
 extends Sprite2D
+
 var scale_x : float = 1.00
 var bosshp : int = 100
 var dead : bool = false
+
 signal bossdead
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

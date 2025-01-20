@@ -1,6 +1,8 @@
 extends CharacterBody2D
+
 var vel : Vector2
 var CURRENTBULLETNODE : CharacterBody2D
+
 signal boss_hit
 
 func _ready() -> void:
