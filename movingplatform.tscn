@@ -1,16 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://feycnr0ao2r"]
+[gd_scene load_steps=7 format=3 uid="uid://feycnr0ao2r"]
 
 [ext_resource type="Script" path="res://movingplatform.gd" id="1_76ren"]
-[ext_resource type="Texture2D" uid="uid://b818wwlo775xy" path="res://icon.svg" id="1_ka6re"]
+[ext_resource type="Texture2D" uid="uid://bw500bkt5gqfo" path="res://Sprite/moving_platform.png" id="2_tn4vp"]
 
 [sub_resource type="Curve2D" id="Curve2D_x0jqh"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 300)
 }
 point_count = 2
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0gek1"]
-size = Vector2(126.633, 121.17)
 
 [sub_resource type="Animation" id="Animation_eto2b"]
 length = 0.001
@@ -59,14 +56,11 @@ script = ExtResource("1_76ren")
 rotation = 1.5708
 
 [node name="Sprite2D" type="Sprite2D" parent="AnimatableBody2D"]
-rotation = -3.14159
-scale = Vector2(0.3, 0.5)
-texture = ExtResource("1_ka6re")
+rotation = -1.5708
+texture = ExtResource("2_tn4vp")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D"]
-rotation = -3.14159
-scale = Vector2(0.3, 0.5)
-shape = SubResource("RectangleShape2D_0gek1")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AnimatableBody2D"]
+polygon = PackedVector2Array(-21, 32, -14, 32, 21, 24, 21, -24, 16, -25, 3, -28, -13, -31, -21, -32)
 
 [node name="PathFollow2D" type="PathFollow2D" parent="."]
 rotation = 1.5708

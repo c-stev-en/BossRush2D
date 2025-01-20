@@ -8,9 +8,7 @@ extends CharacterBody2D
 @onready var bosstimer : Timer = $Timer
 @onready var bodybox : Area2D = $Bodybox
 @onready var anima : AnimatedSprite2D = $AnimatedSprite2D
-@onready var wingdown : CollisionPolygon2D = $Bodybox/WingdownPolygon
 @onready var wingmid : CollisionPolygon2D = $Bodybox/WingmidPolygon
-@onready var wingup : CollisionPolygon2D = $Bodybox/WingupPolygon
 @onready var Player : CharacterBody2D = get_tree().\
 	get_first_node_in_group("Player")
 @onready var bossWall_L : StaticBody2D = get_tree().\
@@ -27,10 +25,10 @@ var temp_playerpos : Vector2
 var temp_bosspos : int
 
 signal valid(val: int)
+signal hit_player
 
 func _ready() -> void:
 	add_collision_exception_with(Player)
-	update_hitbox_frame(0)
 	anima.play("look")
 	anima.flip_h = false
 	rng.seed = Time.get_ticks_msec()
@@ -117,34 +115,18 @@ func _on_timer_timeout() -> void:
 	#print("timer end, Nodelay: ", nodelay, ", waiter1: ", waiter1)
 
 func _on_bodybox_body_entered(body: Node2D) -> void:
+	print("enter")
 	if (bodybox.overlaps_body(Player)):
-		print("Player in me")
+		hit_player.emit()
 
 func _on_animated_sprite_2d_frame_changed() -> void:
-	update_hitbox_frame(anima.frame)
-	
-func update_hitbox_frame(frame : int) -> void:
-	match frame:
-		0:
-			set_polygons(false, true, true)
-			print("frame0")
-		1, 3:
-			set_polygons(true, false, true)
-			print("frame1/3")
-		2:
-			set_polygons(true, true, false)
-			print("frame2")
-		_:
-			print("neither")
-	
-	
-func set_polygons(w_up : bool, w_mid : bool, w_dwn : bool) -> void:
-	wingup.disabled = w_up
-	wingmid.disabled = w_mid
-	wingdown.disabled = w_dwn
-
+	pass
 
 func _on_boss_hp_bar_bossdead() -> void:
 	speed = 0.0
 	await get_tree().create_timer(2).timeout
 	queue_free()
+
+
+func _on_hearts_killplayer() -> void:
+	speed = 0.0

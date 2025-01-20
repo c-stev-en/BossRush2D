@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dppqbu3s6q1kr"]
+[gd_scene load_steps=20 format=3 uid="uid://dppqbu3s6q1kr"]
 
 [ext_resource type="Script" path="res://game_scene.gd" id="1_8piur"]
 [ext_resource type="PackedScene" uid="uid://jh4k5u4riyhe" path="res://Player.tscn" id="1_t2fl7"]
@@ -9,6 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://feycnr0ao2r" path="res://movingplatform.tscn" id="8_i1ge1"]
 [ext_resource type="Texture2D" uid="uid://ummwk7hh22ef" path="res://Sprite/green_box.png" id="8_vw23b"]
 [ext_resource type="Script" path="res://test.gd" id="9_tk56f"]
+[ext_resource type="Texture2D" uid="uid://bvomcjc40r5jx" path="res://Sprite/0Heart.png" id="10_5urue"]
+[ext_resource type="Texture2D" uid="uid://cj2gm84tvtbao" path="res://Sprite/1Heart.png" id="11_3f045"]
+[ext_resource type="Texture2D" uid="uid://d3iqao3mog4ce" path="res://Sprite/2Heart.png" id="12_pj6ft"]
+[ext_resource type="Texture2D" uid="uid://q8bb6dmj43yw" path="res://Sprite/3Heart.png" id="13_luuo6"]
+[ext_resource type="Script" path="res://hearts.gd" id="14_1qwby"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n71kq"]
 size = Vector2(101.513, 326.495)
@@ -27,6 +32,26 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("8_vw23b")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rlrsj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_5urue")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_3f045")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_pj6ft")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_luuo6")
 }],
 "loop": true,
 "name": &"default",
@@ -92,14 +117,28 @@ position = Vector2(660, 110)
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("1_t2fl7")]
 position = Vector2(143, 214)
+slide_on_ceiling = true
+floor_constant_speed = false
 
 [node name="TEST" type="AnimatedSprite2D" parent="."]
-position = Vector2(30, 620)
+position = Vector2(30, 619)
 scale = Vector2(0.08, 0.08)
 sprite_frames = SubResource("SpriteFrames_pqp31")
 script = ExtResource("9_tk56f")
 
+[node name="Hearts" type="AnimatedSprite2D" parent="."]
+position = Vector2(100, 619)
+scale = Vector2(0.03, 0.03)
+sprite_frames = SubResource("SpriteFrames_rlrsj")
+frame = 3
+frame_progress = 0.547238
+script = ExtResource("14_1qwby")
+
 [connection signal="bossdead" from="BossHPBar" to="boss" method="_on_boss_hp_bar_bossdead"]
+[connection signal="hit_player" from="boss" to="Player" method="_on_boss_hit_player"]
 [connection signal="valid" from="boss" to="TEST" method="_on_boss_valid"]
 [connection signal="bossHitt" from="Player" to="BossHPBar" method="_on_player_boss_hitt"]
+[connection signal="hpdec" from="Player" to="Hearts" method="_on_player_hpdec"]
 [connection signal="new_bullet" from="Player" to="boss" method="_on_player_new_bullet"]
+[connection signal="killplayer" from="Hearts" to="boss" method="_on_hearts_killplayer"]
+[connection signal="killplayer" from="Hearts" to="Player" method="_on_hearts_killplayer"]

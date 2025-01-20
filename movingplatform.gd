@@ -4,8 +4,8 @@ extends Path2D
 @onready var anima : AnimationPlayer = $AnimationPlayer
 @onready var sprite : Sprite2D = \
 $AnimatableBody2D/Sprite2D
-@onready var coll_shape : CollisionShape2D = \
-$AnimatableBody2D/CollisionShape2D
+@onready var coll_shape : CollisionPolygon2D = \
+$AnimatableBody2D/CollisionPolygon2D
 
 var loop : bool = true
 var speed : float = 0.14
@@ -17,5 +17,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if (sprite.global_position.y != coll_shape.global_position.y):
-		sprite.global_position.y = coll_shape.global_position.y
+	pass
+	#if (sprite.global_position.y != coll_shape.global_position.y):
+		#sprite.global_position.y = coll_shape.global_position.y

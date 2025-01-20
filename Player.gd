@@ -1,4 +1,5 @@
 extends CharacterBody2D
+
 const bulletpath = preload("res://bullet.tscn")
 const SPEED : float = 180.0
 const JUMP_VELOCITY : float = -400.0
@@ -6,9 +7,18 @@ var bulletpos : Vector2
 var collide_y : int = 560
 var jumpct : int = 1
 var bulletct : int = 0
+var iframe : bool = true
+var hp : int = 3
 var dir : int
+
 signal bossHitt
+signal hpdec(newhp : int)
 signal new_bullet(bullet_node : CharacterBody2D)
+
+@onready var timer : Timer = $Timer
+
+func _ready() -> void:
+	timer.start()
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -53,13 +63,6 @@ func _physics_process(delta: float) -> void:
 			var collider : Object = collision_info.get_collider()
 			if not collider or not (collider.has_node("Sprite2D") or collider.has_node("AnimatedSprite2D")):
 				add_collision_exception_with(collider)
-			else:
-				collide_y = int(collider.global_position.y)
-				if (is_on_floor()):
-					var positionn : int = (collide_y - 58)
-					if (int(global_position.y) < positionn):
-						print("mine: ", int(global_position.y), ", coly: ", positionn)
-						global_position.y = positionn
 				
 	move_and_slide()
 	
@@ -79,3 +82,19 @@ func shoot() -> void:
 
 func bossHit() -> void:
 	bossHitt.emit()
+
+
+func _on_boss_hit_player() -> void:
+	if (iframe == false):
+		iframe = true
+		hp -= 1
+		hpdec.emit(hp)
+		timer.start()
+
+func _on_timer_timeout() -> void:
+	if (iframe == true):
+		iframe = false
+
+
+func _on_hearts_killplayer() -> void:
+	queue_free()
