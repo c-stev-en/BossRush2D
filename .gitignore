@@ -4,6 +4,7 @@
 Demos/
 images/
 Sprite/
+Audio/
 *.tmp
 *.ttf
 *.import

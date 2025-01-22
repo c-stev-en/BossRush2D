@@ -43,7 +43,7 @@ scale = Vector2(-4.51378, -4.81684)
 shape = SubResource("CircleShape2D_bu73v")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 8.0
+wait_time = 7.0
 one_shot = true
 
 [node name="Bodybox" type="Area2D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dppqbu3s6q1kr"]
+[gd_scene load_steps=32 format=3 uid="uid://dppqbu3s6q1kr"]
 
 [ext_resource type="Script" path="res://game_scene.gd" id="1_8piur"]
 [ext_resource type="PackedScene" uid="uid://jh4k5u4riyhe" path="res://Player.tscn" id="1_t2fl7"]
@@ -15,6 +15,14 @@
 [ext_resource type="Texture2D" uid="uid://d3iqao3mog4ce" path="res://Sprite/2Heart.png" id="12_pj6ft"]
 [ext_resource type="Texture2D" uid="uid://q8bb6dmj43yw" path="res://Sprite/3Heart.png" id="13_luuo6"]
 [ext_resource type="Script" path="res://hearts.gd" id="14_1qwby"]
+[ext_resource type="AudioStream" uid="uid://ce0phr11pjv3h" path="res://Audio/shoot.wav" id="16_6n4d4"]
+[ext_resource type="AudioStream" uid="uid://cnajgaglra3y0" path="res://Audio/yow.wav" id="17_o241n"]
+[ext_resource type="AudioStream" uid="uid://b3wsmwyytg4u2" path="res://Audio/wingflap.wav" id="18_5uw2v"]
+[ext_resource type="AudioStream" uid="uid://c1m4x6nbg4iwj" path="res://Audio/jump.wav" id="19_jqcmg"]
+[ext_resource type="AudioStream" uid="uid://bwrin5ussr0en" path="res://Audio/hit_boss.wav" id="20_6f5d7"]
+[ext_resource type="AudioStream" uid="uid://uxjvj5c4snra" path="res://Audio/atk_call.wav" id="21_snk40"]
+[ext_resource type="AudioStream" uid="uid://bx7f7jte7l12s" path="res://Audio/clownmusic.wav" id="22_dlyom"]
+[ext_resource type="FontFile" uid="uid://7j7ml23f06ai" path="res://Roboto-Regular.ttf" id="23_lhtac"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n71kq"]
 size = Vector2(101.513, 326.495)
@@ -56,11 +64,26 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="LabelSettings" id="LabelSettings_2ysu8"]
+font = ExtResource("23_lhtac")
+font_size = 60
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mjf0"]
+bg_color = Color(1, 0, 0.992157, 1)
+
+[sub_resource type="Theme" id="Theme_iskx8"]
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/styles/normal = SubResource("StyleBoxFlat_6mjf0")
+
+[sub_resource type="ImageTexture" id="ImageTexture_6rwkg"]
+
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_8piur")
 
 [node name="backdrop" parent="." instance=ExtResource("2_c8lfp")]
-position = Vector2(576, 231)
+position = Vector2(576, 230)
 scale = Vector2(0.222, 0.222)
 script = null
 
@@ -120,18 +143,64 @@ slide_on_ceiling = true
 floor_constant_speed = false
 
 [node name="TEST" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(30, 619)
 scale = Vector2(0.08, 0.08)
 sprite_frames = SubResource("SpriteFrames_pqp31")
 script = ExtResource("9_tk56f")
 
 [node name="Hearts" type="AnimatedSprite2D" parent="."]
-position = Vector2(100, 619)
-scale = Vector2(0.03, 0.03)
+position = Vector2(80, 610)
+scale = Vector2(0.04, 0.04)
 sprite_frames = SubResource("SpriteFrames_rlrsj")
 frame = 3
 frame_progress = 0.547238
 script = ExtResource("14_1qwby")
+
+[node name="audio_shoot" type="AudioStreamPlayer2D" parent="." groups=["audio_shoot"]]
+stream = ExtResource("16_6n4d4")
+volume_db = -6.0
+
+[node name="audio_dmg" type="AudioStreamPlayer2D" parent="." groups=["audio_dmg"]]
+stream = ExtResource("17_o241n")
+volume_db = -4.0
+
+[node name="audio_wing" type="AudioStreamPlayer2D" parent="." groups=["audio_wing"]]
+stream = ExtResource("18_5uw2v")
+volume_db = -3.0
+
+[node name="audio_jump" type="AudioStreamPlayer2D" parent="." groups=["audio_jump"]]
+stream = ExtResource("19_jqcmg")
+volume_db = -8.0
+
+[node name="audio_hitboss" type="AudioStreamPlayer2D" parent="." groups=["audio_hitboss"]]
+stream = ExtResource("20_6f5d7")
+volume_db = -3.0
+
+[node name="audio_atkcall" type="AudioStreamPlayer2D" parent="." groups=["audio_atkcall"]]
+stream = ExtResource("21_snk40")
+
+[node name="audio_clownbg" type="AudioStreamPlayer2D" parent="." groups=["audio_clownbg"]]
+stream = ExtResource("22_dlyom")
+volume_db = -9.0
+
+[node name="result" type="Label" parent="."]
+offset_left = 444.0
+offset_top = 264.0
+offset_right = 731.0
+offset_bottom = 335.0
+text = "YOU LOSE!"
+label_settings = SubResource("LabelSettings_2ysu8")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 542.0
+offset_top = 326.0
+offset_right = 611.0
+offset_bottom = 357.0
+scale = Vector2(1.42995, 1.38681)
+theme = SubResource("Theme_iskx8")
+text = "Restart"
+icon = SubResource("ImageTexture_6rwkg")
 
 [connection signal="bossdead" from="BossHPBar" to="." method="_on_boss_hp_bar_bossdead"]
 [connection signal="bossdead" from="BossHPBar" to="Moving_L" method="_on_boss_hp_bar_bossdead"]
@@ -145,3 +214,5 @@ script = ExtResource("14_1qwby")
 [connection signal="killplayer" from="Hearts" to="Moving_L" method="_on_hearts_killplayer"]
 [connection signal="killplayer" from="Hearts" to="boss" method="_on_hearts_killplayer"]
 [connection signal="killplayer" from="Hearts" to="Player" method="_on_hearts_killplayer"]
+[connection signal="finished" from="audio_clownbg" to="BossHPBar" method="_on_audio_clownbg_finished"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
