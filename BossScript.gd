@@ -17,8 +17,10 @@ extends CharacterBody2D
 	get_first_node_in_group("audio_atkcall")
 @onready var audio_clownbg : AudioStreamPlayer2D = get_tree().\
 	get_first_node_in_group("audio_clownbg")
+@onready var audio_phase2 : AudioStreamPlayer2D = get_parent().\
+	get_node("audio_phase2")
 var speed : float = 100.0
-var spin_speed : int = 220 
+var spin_speed : int = 220
 var dir : int = 1
 var value : int = 0
 var spin : bool = false
@@ -31,6 +33,9 @@ var nodelay : bool = false
 var temp_playerpos : Vector2
 var temp_bosspos : int
 var framecount : int = 0
+var herecount : int = 0
+var phase2 : bool = false
+var pitchscale : float = 1.000
 
 signal valid(val : int)
 signal hit_player
@@ -44,7 +49,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if (atk == false):
-		if !(spin):
+		if !(spin) and dead == false:
 			velocity.x = dir * speed
 			coll = move_and_slide()
 			if (global_position.y != 110):
@@ -58,13 +63,17 @@ func _physics_process(delta: float) -> void:
 				#print("Val: ", value, ", Nodelay: ", nodelay, ", Spin: ", spin)
 				remove_collision_exception_with(bossWall_L)
 				remove_collision_exception_with(bossWall_R)
-				speed = 100.0
+				if (phase2):
+					speed = 200.0
+				else:
+					speed = 100.0
+				
 				anima.play("look")
 				#print("timer start")
 				bosstimer.start()
 				rotation = 0.0
 				spin = false
-			if (framecount == 5):
+			if (framecount == 5 and dead == false):
 				audio_wing.play()
 	
 		if (coll):
@@ -79,19 +88,22 @@ func _physics_process(delta: float) -> void:
 				speed = 2.0
 				rotation = max(rotation - (21.0 * delta), 0.0)
 				anima.frame = 1
-			if (anima.frame == 2):
+			if (anima.frame == 2 and dead == false):
 				audio_wing.play()
 			framecount = 0
 	
-		if is_on_wall() and ("bossWall" in collider.name) and !spin:
+		if dead == false and is_on_wall() and \
+			("bossWall" in collider.name) and !spin:
 			flip_dir()
 		
 		#GET NEW RNG EVERY SECOND
 		if (Engine.get_process_frames() % 60 == 0 \
 			and !spin and nodelay and speed > 0.0):
 			if (waiter1):
-				value = rng.randi_range(3, 7)
-				print("atk val: ", value)
+				if (phase2):
+					value = rng.randi_range(6, 7)
+				else:
+					value = rng.randi_range(3, 7)
 			if (value == 7 and !atk):
 				waiter1 = false
 				if (dead == false):
@@ -111,7 +123,7 @@ func _physics_process(delta: float) -> void:
 		if (global_position.distance_to(temp_playerpos) <= 8 and atk) :
 			await get_tree().create_timer(0.4, true, false, true).timeout
 			atk = false
-		if (framecount == 6):
+		if (framecount == 6 and dead == false):
 			audio_wing.play()
 			framecount = 0
 		
@@ -124,10 +136,20 @@ func _physics_process(delta: float) -> void:
 		if (get_tree().get_node_count_in_group("Player") == 0):
 			if (speed > 0.0):
 				speed = 0.0
-		if (anima.frame != 1 and speed != 100.0): 
-			speed = 100.0
-	
-	
+			if (phase2 == false and waiter1 == true && speed < 100.0):
+				speed = 100.0
+			elif (phase2 and waiter1 == true && speed < 200.0):
+				speed = 200.0
+		if (spin_speed == 220 && phase2):
+			spin_speed = 300
+		if (herecount == 6):
+			pitchscale = rng.randf_range(0.900, 1.100)
+			audio_wing.pitch_scale = pitchscale
+			audio_phase2.pitch_scale = pitchscale + 0.010
+			herecount = 0
+		else:
+			herecount += 1
+
 	framecount += 1
 
 func flip_dir() -> void:
@@ -145,8 +167,8 @@ func spin_atk(delta : float) -> void:
 		audio_atkcall.play()
 		speed = 0.0
 		await get_tree().create_timer(1).timeout
-		spin = true
 		atk = true
+		spin = true
 		value = 0
 		nodelay = false
 		temp_playerpos = Player.global_position
@@ -179,3 +201,11 @@ func _on_hearts_killplayer() -> void:
 	dead = true
 	speed = 0.0
 	value = 0
+
+func _on_boss_hp_bar_phase_two() -> void:
+	if (phase2 == false):
+		audio_phase2.play()
+		phase2 = true
+		if (spin == false):
+			await get_tree().create_timer(1).timeout
+			spin_atk(get_physics_process_delta_time())

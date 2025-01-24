@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://dppqbu3s6q1kr"]
+[gd_scene load_steps=31 format=3 uid="uid://dppqbu3s6q1kr"]
 
 [ext_resource type="Script" path="res://game_scene.gd" id="1_8piur"]
 [ext_resource type="PackedScene" uid="uid://jh4k5u4riyhe" path="res://Player.tscn" id="1_t2fl7"]
@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://uxjvj5c4snra" path="res://Audio/atk_call.wav" id="21_snk40"]
 [ext_resource type="AudioStream" uid="uid://bx7f7jte7l12s" path="res://Audio/clownmusic.wav" id="22_dlyom"]
 [ext_resource type="FontFile" uid="uid://7j7ml23f06ai" path="res://Roboto-Regular.ttf" id="23_lhtac"]
+[ext_resource type="AudioStream" uid="uid://dgxuc13efkxdf" path="res://Audio/phase2.wav" id="23_t6kpr"]
 [ext_resource type="PackedScene" uid="uid://c20yjwy2xsv55" path="res://backtomenu.tscn" id="24_ipxdp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n71kq"]
@@ -176,6 +177,10 @@ stream = ExtResource("21_snk40")
 stream = ExtResource("22_dlyom")
 volume_db = -9.0
 
+[node name="audio_phase2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("23_t6kpr")
+volume_db = -4.0
+
 [node name="result" type="Label" parent="."]
 offset_left = 444.0
 offset_top = 264.0
@@ -191,6 +196,7 @@ scale = Vector2(0.3, 0.3)
 [connection signal="bossdead" from="BossHPBar" to="." method="_on_boss_hp_bar_bossdead"]
 [connection signal="bossdead" from="BossHPBar" to="Moving_L" method="_on_boss_hp_bar_bossdead"]
 [connection signal="bossdead" from="BossHPBar" to="boss" method="_on_boss_hp_bar_bossdead"]
+[connection signal="phase_two" from="BossHPBar" to="boss" method="_on_boss_hp_bar_phase_two"]
 [connection signal="killplayer" from="Hearts" to="." method="_on_hearts_killplayer"]
 [connection signal="killplayer" from="Hearts" to="Moving_L" method="_on_hearts_killplayer"]
 [connection signal="killplayer" from="Hearts" to="boss" method="_on_hearts_killplayer"]

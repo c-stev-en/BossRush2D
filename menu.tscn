@@ -143,11 +143,9 @@ input_pickable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="exit_button"]
 visibility_layer = 1048575
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_8wa0h")
 
 [node name="exit_sprite" type="Sprite2D" parent="exit_button"]
-scale = Vector2(1, 1)
 texture = ExtResource("5_bffj6")
 
 [node name="begin_button" type="StaticBody2D" parent="."]
