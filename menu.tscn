@@ -1,0 +1,177 @@
+[gd_scene load_steps=13 format=3 uid="uid://rqf84udfjfv7"]
+
+[ext_resource type="Script" path="res://menu.gd" id="1_gmad7"]
+[ext_resource type="FontFile" uid="uid://bjjna2rhrkysx" path="res://Perfect DOS VGA 437.ttf" id="2_hcac6"]
+[ext_resource type="PackedScene" uid="uid://cctqv0qpu7xru" path="res://checkbox.tscn" id="3_cmb06"]
+[ext_resource type="AudioStream" uid="uid://5krx3y7bulx0" path="res://Audio/check_click.wav" id="4_v23s8"]
+[ext_resource type="Texture2D" uid="uid://cuntaqgl0pea6" path="res://Sprite/exit_button.png" id="5_bffj6"]
+[ext_resource type="AudioStream" uid="uid://bk8h33gbahg0m" path="res://Audio/open_menu.wav" id="6_f5fbq"]
+[ext_resource type="Texture2D" uid="uid://cbhdnom1rwkbe" path="res://Sprite/begin.png" id="6_x86af"]
+[ext_resource type="AudioStream" uid="uid://bg68khin3m1dp" path="res://Audio/close_menu.wav" id="7_ltuia"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7hp47"]
+font = ExtResource("2_hcac6")
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_8qhui"]
+font_size = 40
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8wa0h"]
+size = Vector2(310, 310)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_12tf0"]
+size = Vector2(440, 150)
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_gmad7")
+
+[node name="Load" type="Label" parent="."]
+offset_left = 886.0
+offset_top = 582.0
+offset_right = 1148.0
+offset_bottom = 644.0
+text = "Loading..."
+label_settings = SubResource("LabelSettings_7hp47")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Label" type="Label" parent="."]
+offset_left = 508.0
+offset_top = 126.0
+offset_right = 691.0
+offset_bottom = 181.0
+text = "Modifiers"
+label_settings = SubResource("LabelSettings_8qhui")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DoubleHP" type="Label" parent="."]
+offset_left = 237.0
+offset_top = 462.0
+offset_right = 323.0
+offset_bottom = 485.0
+text = "2X Boss HP"
+
+[node name="OneHeart" type="Label" parent="."]
+offset_left = 397.0
+offset_top = 462.0
+offset_right = 483.0
+offset_bottom = 485.0
+text = "1 Heart"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NoDoubleJump" type="Label" parent="."]
+offset_left = 555.0
+offset_top = 462.0
+offset_right = 645.0
+offset_bottom = 485.0
+text = "No 2X Jump"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LessAmmo" type="Label" parent="."]
+offset_left = 692.0
+offset_top = 462.0
+offset_right = 826.0
+offset_bottom = 485.0
+text = "Less Ammo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Kneecapped" type="Label" parent="."]
+offset_left = 853.0
+offset_top = 461.0
+offset_right = 987.0
+offset_bottom = 484.0
+text = "Kneecapped"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayButton" type="Button" parent="."]
+offset_left = 455.0
+offset_top = 204.0
+offset_right = 734.0
+offset_bottom = 293.0
+text = "Play"
+
+[node name="ControlsButton" type="Button" parent="."]
+offset_left = 454.0
+offset_top = 314.0
+offset_right = 736.0
+offset_bottom = 408.0
+text = "Change Controls"
+
+[node name="checkbox1" parent="." groups=["checkboxes"] instance=ExtResource("3_cmb06")]
+position = Vector2(290, 520)
+scale = Vector2(0.5, 0.5)
+
+[node name="checkbox2" parent="." groups=["checkboxes"] instance=ExtResource("3_cmb06")]
+position = Vector2(450, 520)
+scale = Vector2(0.5, 0.5)
+
+[node name="checkbox3" parent="." groups=["checkboxes"] instance=ExtResource("3_cmb06")]
+position = Vector2(610, 520)
+scale = Vector2(0.5, 0.5)
+
+[node name="checkbox5" parent="." groups=["checkboxes"] instance=ExtResource("3_cmb06")]
+position = Vector2(930, 520)
+scale = Vector2(0.5, 0.5)
+
+[node name="checkbox4" parent="." groups=["checkboxes"] instance=ExtResource("3_cmb06")]
+position = Vector2(770, 520)
+scale = Vector2(0.5, 0.5)
+
+[node name="audio_closemenu" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_ltuia")
+volume_db = -2.0
+playback_type = 1
+
+[node name="audio_openmenu" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_f5fbq")
+volume_db = -4.0
+playback_type = 1
+
+[node name="audio_Check_Click" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_v23s8")
+volume_db = -5.0
+
+[node name="exit_button" type="CharacterBody2D" parent="."]
+position = Vector2(1000, 130)
+scale = Vector2(0.2, 0.2)
+input_pickable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="exit_button"]
+visibility_layer = 1048575
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_8wa0h")
+
+[node name="exit_sprite" type="Sprite2D" parent="exit_button"]
+scale = Vector2(1, 1)
+texture = ExtResource("5_bffj6")
+
+[node name="begin_button" type="StaticBody2D" parent="."]
+position = Vector2(1117, 34)
+scale = Vector2(0.2, 0.2)
+disable_mode = 1
+input_pickable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="begin_button"]
+position = Vector2(-2590, 2860)
+scale = Vector2(0.999999, 0.999999)
+shape = SubResource("RectangleShape2D_12tf0")
+
+[node name="begin_sprite" type="Sprite2D" parent="begin_button"]
+position = Vector2(-2590, 2860)
+scale = Vector2(1.46379, 1.46379)
+texture = ExtResource("6_x86af")
+
+[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="ControlsButton" to="." method="_on_controls_button_pressed"]
+[connection signal="input_event" from="checkbox1" to="." method="_on_checkbox_input_event"]
+[connection signal="input_event" from="checkbox2" to="." method="_on_checkbox_2_input_event"]
+[connection signal="input_event" from="checkbox3" to="." method="_on_checkbox_3_input_event"]
+[connection signal="input_event" from="checkbox5" to="." method="_on_checkbox_5_input_event"]
+[connection signal="input_event" from="checkbox4" to="." method="_on_checkbox_4_input_event"]
+[connection signal="input_event" from="exit_button" to="." method="_on_exit_button_input_event"]
+[connection signal="input_event" from="begin_button" to="." method="_on_begin_button_input_event"]

@@ -11,16 +11,19 @@ extends CharacterBody2D
 @onready var result : Label = get_parent().get_node("result")
 
 const bulletpath = preload("res://bullet.tscn")
-const SPEED : float = 180.0
-const JUMP_VELOCITY : float = -400.0
 
-var bulletpos : Vector2
+var SPEED : float = 180.0
+var JUMP_VELOCITY : float = -400.0
+var iframe : bool = false
+var doublejump : bool = true
 var collide_y : int = 560
 var jumpct : int = 1
 var bulletct : int = 0
-var iframe : bool = false
 var hp : int = 3
 var dir : int = 1
+var bullet_max : int = 5
+
+var bulletpos : Vector2
 var direction : int
 
 signal bossHitt
@@ -30,6 +33,22 @@ signal new_bullet(bullet_node : CharacterBody2D)
 func _ready() -> void:
 	timer.start()
 	sprite.visible = true
+	
+	#MODIFIERS
+	#1 Heart
+	if (Global.modifiers[1]):
+		hp = 1
+		hpdec.emit(1)
+	#Single jump
+	if (Global.modifiers[2]):
+		doublejump = false
+	#Ammo restrict
+	if (Global.modifiers[3]):
+		bullet_max = 2
+	#Kneecapped
+	if (Global.modifiers[4]):
+		SPEED = 120.0
+		
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -40,9 +59,13 @@ func _physics_process(delta: float) -> void:
 		if (velocity.y > 0): #Apply extra velocity when falling
 			velocity.y += 10
 	else:
-		jumpct = 2
+		if (doublejump):
+			jumpct = 2
+		else:
+			jumpct = 1
+		
 		if (result.visible):
-			velocity.x = move_toward(velocity.x, 0, 200)
+			velocity.x = 0
 		
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_jump") and (jumpct > 0) \
@@ -54,15 +77,15 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_shoot") and !(result.visible):
 		bulletct = get_tree().get_nodes_in_group("BULLET").size()
 		#print("bulletct: ", bulletct)
-		if (bulletct < 5):
+		if (bulletct < bullet_max):
 			shoot()
 
 	# Get the input direction and handle the movement/deceleration.
 	if !(result.visible):
 		direction = Input.get_axis("ui_left", "ui_right")
-	if direction:
+	if direction and !(result.visible):
 		velocity.x = direction * SPEED
-	else:
+	elif !(result.visible):
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 	
 	#Set shooting direction upon change

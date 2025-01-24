@@ -12,7 +12,8 @@ extends Node2D
 @onready var LMPlatAnim : AnimationPlayer = $Moving_L/AnimationPlayer
 @onready var RMPlatAnim : AnimationPlayer = $Moving_R/AnimationPlayer
 @onready var result : Label = $result
-@onready var rest : Button = $Button
+@onready var Camera : Camera2D = $Camera2D
+@onready var back2 : Sprite2D = $backtomenu
 @onready var pos_x : int = backdrop.global_position.x
 @onready var pos_y : int = backdrop.global_position.y
 @onready var rng : RandomNumberGenerator = RandomNumberGenerator.new()
@@ -25,8 +26,9 @@ var audiopitch : float
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	rest.visible = false
 	result.visible = false
+	back2.visible = false
+	Camera.enabled = true
 	rng.seed = Time.get_ticks_msec()
 	LMPlatAnim.play("new_animation")
 	RMPlatAnim.play("new_animation")
@@ -76,7 +78,7 @@ func _on_hearts_killplayer() -> void:
 	
 func bossdone() -> void:
 	result.visible = true
-	rest.visible = true
+	back2.visible = true
 
 func platsDone() -> void:
 	shake = false
@@ -89,6 +91,4 @@ func BossOver() -> void:
 	backdrop.global_position.x = pos_x
 	backdrop.global_position.y = pos_y
 	framecount = 0
-
-func _on_button_pressed() -> void:
-	get_tree().reload_current_scene()
+	

@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://u8jg0e8c4487"]
+
+[ext_resource type="Script" path="res://Settings.gd" id="1_5mxof"]
+[ext_resource type="FontFile" uid="uid://vbty0qx1vjb3" path="res://futur.ttf" id="2_r6m7u"]
+[ext_resource type="Texture2D" uid="uid://bfn21talmpspd" path="res://Sprite/black.jpg" id="2_t5soj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1ciu6"]
+font = ExtResource("2_r6m7u")
+font_size = 60
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_5mxof")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_t5soj")
+centered = false
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 326.0
+offset_top = 274.0
+offset_right = 826.0
+offset_bottom = 374.0
+text = "Press Shoot"
+label_settings = SubResource("LabelSettings_1ciu6")
+horizontal_alignment = 1
+vertical_alignment = 1

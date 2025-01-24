@@ -73,7 +73,8 @@ func _physics_process(delta: float) -> void:
 				collider = collision.get_collider()
 		
 		if (framecount == 6):
-			if (position.y != 110 or (!(rotation < 1.0))) and !spin:
+			if (position.y != 110 or (!(rotation < 1.0))) and !spin \
+			and dead == false:
 				position.y = 110
 				speed = 2.0
 				rotation = max(rotation - (21.0 * delta), 0.0)
@@ -93,7 +94,11 @@ func _physics_process(delta: float) -> void:
 				print("atk val: ", value)
 			if (value == 7 and !atk):
 				waiter1 = false
-				spin_atk(delta)
+				if (dead == false):
+					spin_atk(delta)
+				else:
+					if (speed != 0.0):
+						speed = 0.0
 				#print("Attack call, waiter1 : ", waiter1)
 			#print("newvalue: ", value)
 		
@@ -131,22 +136,23 @@ func flip_dir() -> void:
 	#print(dir)
 	
 func spin_atk(delta : float) -> void:
-	add_collision_exception_with(bossWall_L)
-	add_collision_exception_with(bossWall_R)
-	anima.stop()
-	anima.frame = 1
-	audio_atkcall.pitch_scale = rng.randf_range(0.94, 1.06)
-	audio_atkcall.play()
-	speed = 0.0
-	await get_tree().create_timer(1).timeout
-	spin = true
-	atk = true
-	value = 0
-	nodelay = false
-	temp_playerpos = Player.global_position
-	temp_bosspos = global_position.x
-	valid.emit(0)
-	#print("NO DELAY: ", nodelay)
+	if (dead == false):
+		add_collision_exception_with(bossWall_L)
+		add_collision_exception_with(bossWall_R)
+		anima.stop()
+		anima.frame = 1
+		audio_atkcall.pitch_scale = rng.randf_range(0.94, 1.06)
+		audio_atkcall.play()
+		speed = 0.0
+		await get_tree().create_timer(1).timeout
+		spin = true
+		atk = true
+		value = 0
+		nodelay = false
+		temp_playerpos = Player.global_position
+		temp_bosspos = global_position.x
+		valid.emit(0)
+		#print("NO DELAY: ", nodelay)
  
 func _on_timer_timeout() -> void:
 	value = 0

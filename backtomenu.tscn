@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://c20yjwy2xsv55"]
+
+[ext_resource type="Texture2D" uid="uid://ce8l5bg2rfo8i" path="res://Sprite/BackToMenu.png" id="1_3l551"]
+[ext_resource type="Script" path="res://BackToMenu.gd" id="2_ufu81"]
+
+[node name="backtomenu" type="Sprite2D"]
+texture = ExtResource("1_3l551")
+script = ExtResource("2_ufu81")

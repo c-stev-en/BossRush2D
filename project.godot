@@ -10,14 +10,25 @@ config_version=5
 
 [application]
 
-config/name="2D Boss Rush"
-run/main_scene="res://game_scene.tscn"
+config/name="Boss Jumpgame"
+run/main_scene="res://menu.tscn"
+run/disable_stdout=true
+run/disable_stderr=true
+config/use_custom_user_dir=true
+config/custom_user_dir_name="2dbossrush"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Global="*res://global.gd"
+
 [display]
 
-window/size/resizable=false
+window/size/window_width_override=1152
+window/size/window_height_override=648
+window/stretch/mode="canvas_items"
+window/stretch/aspect="ignore"
 
 [input]
 
